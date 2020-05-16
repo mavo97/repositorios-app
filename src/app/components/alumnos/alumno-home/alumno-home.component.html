@@ -1,0 +1,141 @@
+<!-- Container -->
+
+<div *ngIf="!noRegistrado">
+    <div class="container main-container">
+
+
+        <div class="row">
+            <!-- profile -->
+            <!-- profile -->
+            <div class="col-sm-3">
+                <div class="container">
+                    <div class="card">
+
+                        <ng-container *ngIf="alumno.photoURL; else elseTemplate">
+                            <img [src]="alumno.photoURL" class="card-img-top" alt="..." width="100" height="200">
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                            <img src="../../../../assets/images/teacher.png" class="card-img-top" alt="..." width="100" height="200">
+                        </ng-template>
+
+                        <div class="card-body">
+                            <p class="text-sm-center"><b>{{ alumno.username }}</b></p>
+                            <p class="text-sm-center"><b>{{ alumno.displayName }}</b></p>
+                            <p class="text-sm-center"><b>{{ alumno.email }}</b></p>
+                            <p class="text-sm-center"><b>{{ alumno.nocontrol }}</b></p>
+
+                        </div>
+                    </div>
+                    <br>
+                    <!-- 
+            <button type="button" class="btn btn-light btn-block btn-border"><b>Editar perfil</b></button>
+            -->
+                </div>
+
+            </div>
+            <div class="col-sm-9">
+
+                <div class="container main-container">
+                    <h4><b>Repositorios</b></h4>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Buscar repositorio" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <a class="btn btn-success" href="./create-repository.html"><i class="fas fa-folder-open"></i> Nuevo</a>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    <a href="./repository.html">
+                                        <h5><b>Titulo del repositorio</b></h5>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <p class="description-font">
+                                        Descripcion del repositorio
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8 mt-0">
+                                    <p class="description-font">
+                                        Typescript
+                                    </p>
+                                </div>
+                                <div class="col-sm-4 mt-0">
+                                    <p class="update-font">
+                                        Actualizado hace 5 minutos
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- Registro -->
+<div class="container mt-2" *ngIf="noRegistrado">
+
+    <div class="alert alert-danger" role="alert">
+        Es necesario completar su información para poder hacer uso de la plataforma.
+    </div>
+    <!-- (ngSubmit)="completarRegistro()" -->
+    <form [formGroup]="forma" (ngSubmit)="completarRegistro()">
+
+
+        <div class="form-group">
+            <label for="control">Número de control</label>
+            <input type="text" class="form-control" id="control" formControlName="nocontrol">
+            <small id="control" class="form-text text-muted">Ingresa tú numero de control institucional.</small>
+        </div>
+        <!-- Validaciones -->
+        <div *ngIf="forma.controls['nocontrol'].errors?.required && (forma.dirty && forma.touched) " class="form-control-feedback">
+            <p style="color: red ">*Campo requerido.</p>
+        </div>
+        <div *ngIf="forma.controls['nocontrol'].errors?.maxlength && forma.controls['nocontrol'].dirty " class="form-control-feedback ">
+            <p style="color: red ">*Maximo 8 números.</p>
+        </div>
+        <div *ngIf="forma.controls['nocontrol'].errors?.minlength && forma.controls['nocontrol'].dirty " class="form-control-feedback ">
+            <p style="color: red ">*Minimo 8 números.</p>
+        </div>
+        <div *ngIf="forma.controls['nocontrol'].errors?.pattern && forma.controls['nocontrol'].dirty " class="form-control-feedback ">
+            <p style="color: red ">*Solo se permiten números.</p>
+        </div>
+
+
+        <div class="form-group">
+            <label for="username">Username GitHub</label>
+            <input type="text" class="form-control" id="username" formControlName="username">
+            <small id="username" class="form-text text-muted">Ingresa su username de su cuenta GitHub.</small>
+        </div>
+        <!-- Validaciones -->
+        <div *ngIf="forma.controls['username'].errors?.required && (forma.dirty && forma.touched) " class="form-control-feedback">
+            <p style="color: red ">*Campo requerido.</p>
+        </div>
+
+
+        <button type="submit" [disabled]="!forma.valid" class="btn btn-primary">Registrar</button>
+
+
+    </form>
+
+</div>

@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+
+.navbar {
+    background-color: #000C28;
+}
+
+.main-name {
+    color: red;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+
+.main-container {
+    margin-top: 12px;
+}
+
+.btn-border {
+    border: 1px solid #ececec;
+}
+
+.description-font {
+    font-size: 14px;
+    color: gray;
+}
+
+.update-font {
+    font-size: 14px;
+    color: gray;
+    font-style: italic;
+}
+
+th.p {
+    text-align: right;
+}
