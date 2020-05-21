@@ -31,3 +31,12 @@
 th.p {
     text-align: right;
 }
+
+$bg: var(--bg-color);
+.dot {
+    height: 15px;
+    width: 15px;
+    background-color: $bg;
+    border-radius: 50%;
+    display: inline-block;
+}

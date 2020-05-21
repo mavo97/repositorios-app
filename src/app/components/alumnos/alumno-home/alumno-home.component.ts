@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-
+import { Subscription } from 'rxjs';
+import { Apollo } from 'apollo-angular';
 
 // Models
 import { Alumno } from 'src/app/models/alumno';
 import { UID } from 'src/app/models/uid';
 import { Alert } from '../../../models/alerts';
+import { Repositorios } from 'src/app/models/repositorios';
 
 // Providers
 import { AuthService } from '../../../providers/auth.service';
 import { ValidarCrearService } from '../../../providers/validar-crear.service';
 import { ReadDataUService } from '../../../providers/read-data-u.service';
-
+import { QuerysService } from '../../../providers/github/querys.service';
 
 @Component({
   selector: 'app-alumno-home',
@@ -24,10 +26,16 @@ export class AlumnoHomeComponent implements OnInit {
   forma: FormGroup; // Formulario para validar
   public alumno: Alumno = new Alumno();
   public noRegistrado: boolean;
+  private querySubscription: Subscription;
+  public repositorios: Repositorios = new Repositorios();
+  nodosRepositorios: any;
+  username = localStorage.getItem('username');
 
   constructor( public auth: AuthService,
                public validarcrear: ValidarCrearService,
-               public readData: ReadDataUService ) {
+               public readData: ReadDataUService,
+               public queryService: QuerysService,
+               public apollo: Apollo ) {
 
     // Validaciones para el formulario
     this.forma = new FormGroup({
@@ -58,6 +66,22 @@ export class AlumnoHomeComponent implements OnInit {
       }
     });
 
+    /*this.querySubscription = this.apollo.watchQuery<any>({
+      query: CurrentUserForProfile
+    })
+      .valueChanges
+      .subscribe( resp => {
+        console.log(resp);
+      });*/
+    this.querySubscription = this.apollo.watchQuery<any>({
+      query: this.queryService.getRepositories(),
+      variables: { user: this.username }
+    })
+      .valueChanges
+      .subscribe( (resp: Repositorios ) => {
+        // console.log(resp.data.user.repositories.nodes);
+        this.nodosRepositorios = resp.data.user.repositories.nodes;
+      });
   }
 
   completarRegistro() {
@@ -98,8 +122,10 @@ export class AlumnoHomeComponent implements OnInit {
     this.readData.getAlumno( localStorage.getItem('uid') )
     .subscribe( (resp: Alumno ) => {
       this.alumno = resp;
-      console.log(this.alumno);
+      localStorage.setItem('username', this.alumno.username);
+      // console.log(this.alumno);
     });
   }
+
 
 }

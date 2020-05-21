@@ -5,8 +5,12 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
 
+// Services
+import { ValidarCrearService } from './validar-crear.service';
+
 // Models
 import { User } from '../models/user';
+import { Asesor } from '../models/asesor';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +20,8 @@ export class AuthService {
   public usuario: User = new User();
 
   constructor( public afAuth: AngularFireAuth,
-               private router: Router  ) {
+               private router: Router,
+               private buscar: ValidarCrearService  ) {
 
     this.afAuth.authState.subscribe( ( user: User ) => {
     // console.log( 'Estado del usuario: ', user );
@@ -36,10 +41,33 @@ export class AuthService {
   }
 
   login( proveedor: string) {
+
+    // Asesor
     if ( proveedor === 'google') {
 
-      if ( localStorage.getItem('uid') ) {
-        this.router.navigateByUrl('/asesor');
+      const id = {
+        uid: localStorage.getItem('uid')
+      };
+      const idF = JSON.stringify(id);
+
+      if ( id.uid !== null ) {
+
+        this.buscar.validarAsesor(idF).subscribe(
+
+          (resp) => {
+
+            if ( resp.message === 'Cuenta de correo no se encuentra registrada.' ) {
+              // console.log('Se debe registrar al alumno');
+              this.logout();
+            } else {
+              // console.log('No se debe registrar al alumno');
+              this.router.navigateByUrl('/asesor');
+          }
+
+           }
+
+        );
+
       } else {
         this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
       }
@@ -56,11 +84,35 @@ export class AuthService {
         } );
 
     } else {
-      
-      if ( localStorage.getItem('uid') ) {
-        this.router.navigateByUrl('/alumno');
+      // Alumno
+
+      const id = {
+        uid: localStorage.getItem('uid')
+      };
+      const idF = JSON.stringify(id);
+
+      if ( id.uid !== null ) {
+
+        this.buscar.validarAlumno(idF).subscribe(
+
+          (resp) => {
+
+            if ( resp.message === 'Cuenta de correo no se encuentra registrada.' ) {
+              // console.log('Se debe registrar al alumno');
+              this.logout();
+            } else {
+              // console.log('No se debe registrar al alumno');
+              this.router.navigateByUrl('/alumno');
+          }
+
+           }
+
+        );
+
       } else {
+
         this.afAuth.auth.signInWithPopup(new auth.GithubAuthProvider());
+ 
       }
 
       this.afAuth.authState.subscribe( user => {
@@ -89,6 +141,7 @@ export class AuthService {
     localStorage.removeItem('displayName');
     localStorage.removeItem('photoURL');
     localStorage.removeItem('email');
+    localStorage.removeItem('username');
   }
 
   logout() {

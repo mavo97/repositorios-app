@@ -23,7 +23,20 @@
             <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
         </form>
     -->
+        <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                <ng-container *ngIf="photoUrl; else elseTemplate">
+                    <img class="rounded" width="30px" height="30px" [src]="photoUrl">
+                </ng-container>
+                <ng-template #elseTemplate>
+                    <img src="../../../../assets/images/teacher.png" class="rounded" width="30px" height="30px" alt="..." >
+                </ng-template>
+           <span class="caret"></span>
+        </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <button class="btn btn-dark dropdown-item" (click)="logOut()"><i class="fas fa-sign-out-alt"></i></button>
 
-        <button class="ml-2 btn btn-light" (click)="logOut()"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
     </div>
 </nav>

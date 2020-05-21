@@ -7,15 +7,22 @@ import { AuthService } from '../../providers/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  
+  photoUrl: string;
 
   constructor( public auth: AuthService) { }
 
+
   ngOnInit() {
+
+    this.photoUrl = localStorage.getItem('photoURL');
+
   }
 
   logOut() {
 
     this.auth.logout();
+    this.photoUrl = '';
 
   }
 

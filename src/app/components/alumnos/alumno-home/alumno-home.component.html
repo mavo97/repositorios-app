@@ -3,7 +3,6 @@
 <div *ngIf="!noRegistrado">
     <div class="container main-container">
 
-
         <div class="row">
             <!-- profile -->
             <!-- profile -->
@@ -19,8 +18,8 @@
                         </ng-template>
 
                         <div class="card-body">
-                            <p class="text-sm-center"><b>{{ alumno.username }}</b></p>
                             <p class="text-sm-center"><b>{{ alumno.displayName }}</b></p>
+                            <p class="text-sm-center"><b>{{ alumno.username }}</b></p>
                             <p class="text-sm-center"><b>{{ alumno.email }}</b></p>
                             <p class="text-sm-center"><b>{{ alumno.nocontrol }}</b></p>
 
@@ -51,31 +50,31 @@
 
                     <hr>
 
-                    <ul class="list-group">
+                    <ul class="list-group" *ngFor="let repo of nodosRepositorios">
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col">
                                     <a href="./repository.html">
-                                        <h5><b>Titulo del repositorio</b></h5>
+                                        <h5><b>{{ repo.name }}</b></h5>
                                     </a>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mt-0">
                                     <p class="description-font">
-                                        Descripcion del repositorio
+                                        {{ repo.description }}
                                     </p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-8 mt-0">
                                     <p class="description-font">
-                                        Typescript
+                                        <span class="dot" [ngStyle]="{ 'background-color': repo.primaryLanguage.color }"></span> {{ repo.primaryLanguage.name }}
                                     </p>
                                 </div>
                                 <div class="col-sm-4 mt-0">
                                     <p class="update-font">
-                                        Actualizado hace 5 minutos
+                                        Actualizado {{ repo.pushedAt | date: 'EEEE dd LLLL yyyy' }}
                                     </p>
                                 </div>
                             </div>
@@ -103,9 +102,9 @@
 
 
         <div class="form-group">
-            <label for="control">Número de control</label>
+            <label for="control"><i class="fab fa-slack-hash"></i> Número de control</label>
             <input type="text" class="form-control" id="control" formControlName="nocontrol">
-            <small id="control" class="form-text text-muted">Ingresa tú numero de control institucional.</small>
+            <small id="control" class="form-text text-muted">Ingresé su número de control.</small>
         </div>
         <!-- Validaciones -->
         <div *ngIf="forma.controls['nocontrol'].errors?.required && (forma.dirty && forma.touched) " class="form-control-feedback">
@@ -123,9 +122,9 @@
 
 
         <div class="form-group">
-            <label for="username">Username GitHub</label>
+            <label for="username"><i class="fab fa-github"></i> Nombre de usuario en GitHub</label>
             <input type="text" class="form-control" id="username" formControlName="username">
-            <small id="username" class="form-text text-muted">Ingresa su username de su cuenta GitHub.</small>
+            <small id="username" class="form-text text-muted">Ingresé su nombre de usuario de su cuenta GitHub.</small>
         </div>
         <!-- Validaciones -->
         <div *ngIf="forma.controls['username'].errors?.required && (forma.dirty && forma.touched) " class="form-control-feedback">
