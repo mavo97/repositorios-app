@@ -132,12 +132,17 @@ export class AuthService {
   asignarData() {
     localStorage.setItem('uid', this.usuario.uid);
     localStorage.setItem('photoURL', this.usuario.photoURL);
+    localStorage.setItem('displayName', this.usuario.displayName);
+    localStorage.setItem('email', this.usuario.email);
   }
 
   eliminarData() {
     localStorage.removeItem('uid');
     localStorage.removeItem('photoURL');
     localStorage.removeItem('username');
+    localStorage.removeItem('email');
+    localStorage.removeItem('displayName');
+    localStorage.removeItem('provider');
   }
 
   logout() {

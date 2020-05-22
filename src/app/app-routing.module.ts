@@ -9,10 +9,13 @@ import { AsesorHomeComponent } from './components/asesores/asesor-home/asesor-ho
 // Compartido
 import { LoginComponent } from './components/login/login.component';
 
+// Guards
+import { AlumnoGuard } from './guards/alumno.guard';
+import { AsesorGuard } from './guards/asesor.guard';
 
 const routes: Routes = [
-    { path: 'asesor', component: AsesorHomeComponent },
-    { path: 'alumno', component: AlumnoHomeComponent },
+    { path: 'asesor', component: AsesorHomeComponent, canActivate: [ AsesorGuard ] },
+    { path: 'alumno', component: AlumnoHomeComponent, canActivate: [ AlumnoGuard ] },
     { path: '', component: LoginComponent },
     { path: '**', pathMatch: 'full', redirectTo: '' }
   ];

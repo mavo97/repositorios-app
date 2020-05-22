@@ -14,9 +14,13 @@ export class LoginComponent implements OnInit {
   }
 
   ingresar( proveedor: string ) {
-    console.log(proveedor);
-
+    // console.log(proveedor);
     this.auth.login(proveedor);
+    if ( proveedor === 'google' ) {
+      localStorage.setItem('provider', 'asesor');
+    } else {
+      localStorage.setItem('provider', 'alumno');
+    }
 
   }
 

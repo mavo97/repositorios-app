@@ -49,12 +49,17 @@ export class AlumnoHomeComponent implements OnInit {
 
   ngOnInit() {
 
+    this.validarAlumno();
+
+  }
+
+  validarAlumno() {
+
     const id: UID = {
       uid: localStorage.getItem('uid')
     };
 
     const idF = JSON.stringify(id);
-    // console.log(idF);
     this.validarcrear.validarAlumno( idF ).subscribe( resp => {
       if ( resp.message === 'Cuenta de correo no se encuentra registrada.' ) {
           // console.log('Se debe registrar al alumno');
@@ -74,16 +79,7 @@ export class AlumnoHomeComponent implements OnInit {
       }
 
     });
-
-    /*this.querySubscription = this.apollo.watchQuery<any>({
-      query: CurrentUserForProfile
-    })
-      .valueChanges
-      .subscribe( resp => {
-        console.log(resp);
-      });*/
   }
-
 
   completarRegistro() {
 
@@ -99,6 +95,8 @@ export class AlumnoHomeComponent implements OnInit {
     const alerta: Alert = new Alert();
 
     peticion = this.validarcrear.registrarAlumno( this.alumno );
+
+    // console.log(this.alumno);
     alerta.cargando('Espere', 'Guardando información!');
     peticion.subscribe( resp => {
       if ( resp.message === 'Cuenta de correo ya se encuentra registrada.' ) {
@@ -108,7 +106,7 @@ export class AlumnoHomeComponent implements OnInit {
       } else if ( resp.message === 'Cuenta creada correctamente.' ) {
 
         alerta.exito('Éxito', 'Cuenta creada correctamente.');
-        this.noRegistrado = false;
+        this.validarAlumno();
 
       }},
       (err) => {
@@ -124,7 +122,6 @@ export class AlumnoHomeComponent implements OnInit {
     .subscribe( (resp: Alumno ) => {
       this.alumno = resp;
       localStorage.setItem('username', this.alumno.username);
-      console.log(this.alumno);
     });
   }
 
