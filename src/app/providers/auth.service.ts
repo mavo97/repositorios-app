@@ -112,7 +112,7 @@ export class AuthService {
       } else {
 
         this.afAuth.auth.signInWithPopup(new auth.GithubAuthProvider());
- 
+
       }
 
       this.afAuth.authState.subscribe( user => {
@@ -131,16 +131,12 @@ export class AuthService {
 
   asignarData() {
     localStorage.setItem('uid', this.usuario.uid);
-    localStorage.setItem('displayName', this.usuario.displayName);
     localStorage.setItem('photoURL', this.usuario.photoURL);
-    localStorage.setItem('email', this.usuario.email);
   }
 
   eliminarData() {
     localStorage.removeItem('uid');
-    localStorage.removeItem('displayName');
     localStorage.removeItem('photoURL');
-    localStorage.removeItem('email');
     localStorage.removeItem('username');
   }
 

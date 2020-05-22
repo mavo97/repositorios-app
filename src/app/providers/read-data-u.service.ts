@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 // Models
 import { Alumno } from '../models/alumno';
@@ -25,6 +25,10 @@ export class ReadDataUService {
 
     return this.http.get(`${this.url}/alumno/read-alumno.php?uid=${uid}`);
 
+  }
+
+  getToken(): Observable<any> {
+    return this.http.get(`${this.url}/token/getToken.php`);
   }
 
 }

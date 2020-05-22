@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -29,7 +29,7 @@ export class AlumnoHomeComponent implements OnInit {
   private querySubscription: Subscription;
   public repositorios: Repositorios = new Repositorios();
   nodosRepositorios: any;
-  username = localStorage.getItem('username');
+  username: string;
 
   constructor( public auth: AuthService,
                public validarcrear: ValidarCrearService,
@@ -63,7 +63,16 @@ export class AlumnoHomeComponent implements OnInit {
         // console.log('No se debe registrar al alumno');
         this.getAlumno();
         this.noRegistrado = false;
+
+        setTimeout(() => {
+
+          this.username = localStorage.getItem('username');
+          this.getRepositories();
+
+        }, 500);
+
       }
+
     });
 
     /*this.querySubscription = this.apollo.watchQuery<any>({
@@ -73,16 +82,8 @@ export class AlumnoHomeComponent implements OnInit {
       .subscribe( resp => {
         console.log(resp);
       });*/
-    this.querySubscription = this.apollo.watchQuery<any>({
-      query: this.queryService.getRepositories(),
-      variables: { user: this.username }
-    })
-      .valueChanges
-      .subscribe( (resp: Repositorios ) => {
-        // console.log(resp.data.user.repositories.nodes);
-        this.nodosRepositorios = resp.data.user.repositories.nodes;
-      });
   }
+
 
   completarRegistro() {
 
@@ -123,9 +124,22 @@ export class AlumnoHomeComponent implements OnInit {
     .subscribe( (resp: Alumno ) => {
       this.alumno = resp;
       localStorage.setItem('username', this.alumno.username);
-      // console.log(this.alumno);
+      console.log(this.alumno);
     });
   }
 
+  getRepositories() {
+
+    this.querySubscription = this.apollo.watchQuery<any>({
+      query: this.queryService.getRepositories(),
+      variables: { user: this.username }
+    })
+      .valueChanges
+      .subscribe( (resp: Repositorios ) => {
+        // console.log(resp.data.user.repositories.nodes);
+        this.nodosRepositorios = resp.data.user.repositories.nodes;
+      });
+
+  }
 
 }
