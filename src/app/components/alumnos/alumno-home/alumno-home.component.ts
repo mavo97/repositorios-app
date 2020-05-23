@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 
 // Models
@@ -9,6 +8,7 @@ import { Alumno } from 'src/app/models/alumno';
 import { UID } from 'src/app/models/uid';
 import { Alert } from '../../../models/alerts';
 import { Repositorios } from 'src/app/models/repositorios';
+import { Repositorio } from '../../../models/repository';
 
 // Providers
 import { AuthService } from '../../../providers/auth.service';
@@ -30,6 +30,11 @@ export class AlumnoHomeComponent implements OnInit {
   public repositorios: Repositorios = new Repositorios();
   nodosRepositorios: any;
   username: string;
+  buscando: boolean;
+  resultado: boolean;
+  loading: boolean;
+  repositorio: any;
+  mensaje: any;
 
   constructor( public auth: AuthService,
                public validarcrear: ValidarCrearService,
@@ -50,8 +55,12 @@ export class AlumnoHomeComponent implements OnInit {
   ngOnInit() {
 
     this.validarAlumno();
+    this.buscando = false;
+    this.resultado = true;
 
   }
+
+  changeMessage(message: string) {  this.mensaje.next(message); }
 
   validarAlumno() {
 
@@ -64,9 +73,11 @@ export class AlumnoHomeComponent implements OnInit {
       if ( resp.message === 'Cuenta de correo no se encuentra registrada.' ) {
           // console.log('Se debe registrar al alumno');
           this.noRegistrado = true;
+          this.auth.changeMessage('alumnoincompleto');
       } else {
         // console.log('No se debe registrar al alumno');
         this.getAlumno();
+        this.auth.changeMessage('alumnocompleto');
         this.noRegistrado = false;
 
         setTimeout(() => {
@@ -74,7 +85,7 @@ export class AlumnoHomeComponent implements OnInit {
           this.username = localStorage.getItem('username');
           this.getRepositories();
 
-        }, 500);
+        }, 100);
 
       }
 
@@ -107,7 +118,7 @@ export class AlumnoHomeComponent implements OnInit {
 
         alerta.exito('Éxito', 'Cuenta creada correctamente.');
         this.validarAlumno();
-
+        this.auth.changeMessage('alumnocompleto');
       }},
       (err) => {
 
@@ -136,7 +147,35 @@ export class AlumnoHomeComponent implements OnInit {
         // console.log(resp.data.user.repositories.nodes);
         this.nodosRepositorios = resp.data.user.repositories.nodes;
       });
+    this.loading = false;
 
   }
 
+  buscarRepo( event: any ) {
+
+    const busqueda: string = event.target.value;
+
+    this.querySubscription = this.apollo.watchQuery<any>({
+      query: this.queryService.searchRepository(),
+      variables: { owner: this.username, name: busqueda}
+    })
+      .valueChanges
+      .subscribe( (resp: Repositorio ) => {
+        this.repositorio = resp.data.repository;
+        this.resultado = false;
+        this.buscando = true;
+        this.loading = false;
+      }, (err) => {
+        this.resultado = true;
+      });
+
+    if ( busqueda.length > 0 ) {
+      this.buscando = true;
+      this.loading = true;
+    } else {
+      this.buscando = false;
+      this.resultado = false;
+      this.loading = false;
+    }
+  }
 }

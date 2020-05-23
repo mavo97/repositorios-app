@@ -9,27 +9,28 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!--
+
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="./user-alumn/profile.html"><b>Inicio</b></a>
+            <li class="nav-item" *ngIf="alumno">
+                <a class="nav-link" [routerLink]="['/alumno']" routerLinkActive="active"><b>Inicio</b></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./user-alumn/users.html"><b>Usuarios</b></a>
+            <li class="nav-item" *ngIf="asesor">
+                <a class="nav-link" [routerLink]="['/asesor']" routerLinkActive="active"><b>Inicio</b></a>
             </li>
         </ul>
+        <!--    
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Buscar usuario" aria-label="Search">
             <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
         </form>
     -->
-        <div class="dropdown">
-            <button class="btn btn-dark dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+        <div class="btn-group dropleft" *ngIf="alumno || asesor">
+            <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
                 <ng-container *ngIf="photoUrl; else elseTemplate">
                     <img class="rounded" width="30px" height="30px" [src]="photoUrl">
                 </ng-container>
                 <ng-template #elseTemplate>
-                    <img src="../../../../assets/images/teacher.png" class="rounded" width="15px" height="15px" alt="..." >
+                    <img src="../../../../assets/images/teacher.png" class="rounded" width="10px" height="10px" alt="..." >
                 </ng-template>
            <span class="caret"></span>
         </button>

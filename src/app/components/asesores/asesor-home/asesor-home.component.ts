@@ -47,10 +47,12 @@ export class AsesorHomeComponent implements OnInit {
 
     this.validarcrear.validarAsesor( idF ).subscribe( resp => {
       if ( resp.message === 'Cuenta de correo no se encuentra registrada.' ) {
+        this.auth.changeMessage('asesorincompleto');
         // console.log('Se debe registrar al asesor');
         this.noRegistrado = true;
       } else {
         // console.log('No se debe registrar al asesor');
+        this.auth.changeMessage('asesorcompleto');
         this.noRegistrado = false;
         this.getAsesor();
 
@@ -86,6 +88,7 @@ export class AsesorHomeComponent implements OnInit {
 
         alerta.exito('Éxito', 'Cuenta creada correctamente.');
         this.noRegistrado = false;
+        this.auth.changeMessage('asesorcompleto');
 
       }},
       (err) => {

@@ -32,4 +32,21 @@ export class QuerysService {
       `;
     return repositories;
   }
+
+  searchRepository( ) {
+    const repository = gql`
+        query Repository($name: String!, $owner: String!){
+          repository(name:$name owner: $owner){
+            name
+            description
+            primaryLanguage{
+              name
+              color
+            }
+          pushedAt
+        }
+      }
+      `;
+    return repository;
+  }
 }

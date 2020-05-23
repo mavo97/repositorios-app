@@ -20,7 +20,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { AlumnoHomeComponent } from './components/alumnos/alumno-home/alumno-home.component';
 import { AsesorHomeComponent } from './components/asesores/asesor-home/asesor-home.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
+import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { GraphQLModule } from './graphql.module';
 
 @NgModule({
