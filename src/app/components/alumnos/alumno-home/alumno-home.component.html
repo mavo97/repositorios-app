@@ -67,9 +67,11 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col">
-                                        <a href="./repository.html">
+                                        <button type="button" class="link" (click)="verRepositorio(repo.name)">
                                             <h5><b>{{ repo.name }}</b></h5>
-                                        </a>
+                                        </button>
+                                        <!--<a [routerLink]="['alumno/', repo.name ]">{{ repo.name }}</a>-->
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -101,9 +103,9 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col">
-                                        <a href="./repository.html">
+                                        <button type="button" class="btn btn-outline-info btn-lg" (click)="verRepositorio(repositorio.name)">
                                             <h5><b>{{ repositorio.name }}</b></h5>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="row">

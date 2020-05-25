@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Apollo } from 'apollo-angular';
+import { Router, ActivatedRoute } from '@angular/router';
 
 // Models
 import { Alumno } from 'src/app/models/alumno';
@@ -40,7 +41,10 @@ export class AlumnoHomeComponent implements OnInit {
                public validarcrear: ValidarCrearService,
                public readData: ReadDataUService,
                public queryService: QuerysService,
-               public apollo: Apollo ) {
+               public apollo: Apollo,
+               public router: Router,
+               public route: ActivatedRoute
+               ) {
 
     // Validaciones para el formulario
     this.forma = new FormGroup({
@@ -143,7 +147,7 @@ export class AlumnoHomeComponent implements OnInit {
       variables: { user: this.username }
     })
       .valueChanges
-      .subscribe( (resp: Repositorios ) => {
+      .subscribe( ( resp: Repositorios ) => {
         // console.log(resp.data.user.repositories.nodes);
         this.nodosRepositorios = resp.data.user.repositories.nodes;
       });
@@ -178,4 +182,7 @@ export class AlumnoHomeComponent implements OnInit {
       this.loading = false;
     }
   }
+
+  verRepositorio( repositorio: string ) { this.router.navigate(['alumno/', repositorio]); }
+
 }
