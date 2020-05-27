@@ -25,11 +25,16 @@
                         ],
                         "styles": [
                             "src/styles.scss",
-                            "src/assets/b4/css/bootstrap.min.css"
+                            "src/assets/b4/css/bootstrap.min.css",
+                            "node_modules/prismjs/themes/prism-okaidia.css",
+                            "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css"
                         ],
                         "scripts": [
                             "src/assets/b4/jquery/jquery.slim.min.js",
-                            "src/assets/b4/js/bootstrap.min.js"
+                            "src/assets/b4/js/bootstrap.min.js",
+                            "node_modules/prismjs/prism.js",
+                            "node_modules/prismjs/components/prism-css.min.js",
+                            "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js"
                         ]
                     },
                     "configurations": {
