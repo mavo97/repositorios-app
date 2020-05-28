@@ -42,19 +42,25 @@
                         <br>
                         <div class="container">
                             <ul class="list-group">
-                                <li class="list-group-item">
-                                    <a href="#"><img class="img-thumbnail" src="../../../../assets/images/teacher.png" width="50px" height="50px"></a>
-                                    <a href="#">mavo97</a>
-                                </li>
-                                <li class="list-group-item">
-                                    <a href="#"><img class="img-thumbnail" src="../../../../assets/images/teacher.png" width="50px" height="50px"></a>
-                                    <a href="#">mavo97</a>
-                                </li>
-                                <li class="list-group-item">
-                                    <a href="#"><img class="img-thumbnail" src="../../../../assets/images/teacher.png" width="50px" height="50px"></a>
-                                    <a href="#">mavo97</a>
-                                </li>
+                                <li class="list-group-item" *ngFor="let alumno of alumnos">
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <ng-container *ngIf="alumno.photoURL; else elseTemplate">
+                                                <img class="img-thumbnail" [src]="alumno.photoURL" width="60px" height="60px">
+                                            </ng-container>
+                                            <ng-template #elseTemplate>
+                                                <img class="img-thumbnail" src="../../../../assets/images/teacher.png" width="60px" height="60px">
+                                            </ng-template>
 
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <button class="link">{{alumno.username}}</button><br>
+                                            <small class="text-secondary"><b>{{alumno.displayName}}</b></small>
+                                            <small> - </small>
+                                            <small class="text-secondary">{{alumno.nocontrol}}</small>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
 

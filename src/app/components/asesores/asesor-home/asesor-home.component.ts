@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { UID } from 'src/app/models/uid';
 import { Alert } from '../../../models/alerts';
 import { Asesor } from 'src/app/models/asesor';
-
+import { Alumnos } from '../../../models/getAlumnos';
 
 // Providers
 import { AuthService } from '../../../providers/auth.service';
@@ -22,7 +22,7 @@ export class AsesorHomeComponent implements OnInit {
 
   forma: FormGroup; // Formulario para validar
   public noRegistrado: boolean;
-  public asesor: Asesor = new Asesor();
+  public asesor: Asesor = new Asesor(); alumnos: any;
 
   constructor( public auth: AuthService,
                public validarcrear: ValidarCrearService,
@@ -39,6 +39,11 @@ export class AsesorHomeComponent implements OnInit {
 
   ngOnInit() {
 
+    this.validarAsesor(); this.getAlumnos();
+
+  }
+
+  validarAsesor() {
     const id: UID = {
       uid: localStorage.getItem('uid')
     };
@@ -47,18 +52,12 @@ export class AsesorHomeComponent implements OnInit {
 
     this.validarcrear.validarAsesor( idF ).subscribe( resp => {
       if ( resp.message === 'Cuenta de correo no se encuentra registrada.' ) {
-        this.auth.changeMessage('asesorincompleto');
-        // console.log('Se debe registrar al asesor');
-        this.noRegistrado = true;
+        this.auth.changeMessage('asesorincompleto'); this.noRegistrado = true; // console.log('Se debe registrar al asesor');
       } else {
         // console.log('No se debe registrar al asesor');
-        this.auth.changeMessage('asesorcompleto');
-        this.noRegistrado = false;
-        this.getAsesor();
-
+        this.auth.changeMessage('asesorcompleto'); this.noRegistrado = false; this.getAsesor();
       }
     });
-
   }
 
   completarRegistro() {
@@ -106,4 +105,7 @@ export class AsesorHomeComponent implements OnInit {
     });
   }
 
+  getAlumnos() {
+    this.readData.getAlumnos().subscribe( ( resp: Alumnos ) => this.alumnos = resp.records );
+  }
 }

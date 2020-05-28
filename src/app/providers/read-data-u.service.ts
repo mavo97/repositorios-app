@@ -31,6 +31,9 @@ export class ReadDataUService {
   getToken(): Observable<any> {
     return this.http.get(`${this.url}/token/getToken.php`);
   }
+
+  getAlumnos() { return this.http.get(`${this.url}/alumno/get-alumnos.php`); }
+
   /*
   tipoUsuario() {
 
