@@ -14,12 +14,13 @@ import { LoginComponent } from './components/login/login.component';
 // Guards
 import { AlumnoGuard } from './guards/alumno.guard';
 import { AsesorGuard } from './guards/asesor.guard';
+import { LogueadoGuard } from './guards/logueado.guard';
 
 const routes: Routes = [
     { path: 'asesor', component: AsesorHomeComponent, canActivate: [ AsesorGuard ] },
     { path: 'alumno', component: AlumnoHomeComponent, canActivate: [ AlumnoGuard ] },
     { path: 'alumno/:repositorio', component: AlumnoRepositoryComponent, canActivate: [ AlumnoGuard ] },
-    { path: '', component: LoginComponent },
+    { path: '', component: LoginComponent, canActivate: [ LogueadoGuard ] },
     { path: '**', pathMatch: 'full', redirectTo: '' }
   ];
 
