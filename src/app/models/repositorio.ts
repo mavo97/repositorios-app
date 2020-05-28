@@ -8,6 +8,7 @@ interface data {
 
 interface repository {
     sshUrl: string;
+    url: string;
     object: gitObject;
 }
 

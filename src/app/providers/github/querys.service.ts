@@ -55,6 +55,7 @@ export class QuerysService {
     query Repo($name: String!, $owner: String!, $branch: String!){
       repository(name: $name, owner: $owner) {
         sshUrl
+        url
         object(expression: $branch) {
           ... on Tree {
             entries {

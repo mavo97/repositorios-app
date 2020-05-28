@@ -21,6 +21,7 @@ export class AlumnoRepositoryComponent implements OnInit {
   private querySubscription: Subscription;
   photoUser: string; username: string; commit: boolean;
   repo: string; repository: any; sshUrl: string; commits: any; content: string;
+  url: string;
 
   constructor( public queryService: QuerysService,
                public apollo: Apollo, private route: ActivatedRoute ) { }
@@ -37,6 +38,7 @@ export class AlumnoRepositoryComponent implements OnInit {
       variables: { owner: this.username, name, branch }
     }).valueChanges.subscribe( ( resp: Repository ) => {
       this.repository = resp.data.repository.object.entries; this.sshUrl = resp.data.repository.sshUrl;
+      this.url = resp.data.repository.url;
     });
   }
   copyUrl( inputElement ) {
@@ -60,4 +62,5 @@ export class AlumnoRepositoryComponent implements OnInit {
       variables: { owner: this.username, name: this.repo, file: `master:${ nameFile }` }
     }).valueChanges.subscribe( ( resp: Content ) => { this.content = resp.data.repository.object.text; });
   }
+  verRepo( url ) { window.open(url, '_blank'); }
 }
