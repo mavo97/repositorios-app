@@ -15,11 +15,11 @@ import { Content } from '../../../models/content';
 import { Alumno } from 'src/app/models/alumno';
 
 @Component({
-  selector: 'app-alumno-repository',
-  templateUrl: './alumno-repository.component.html',
-  styleUrls: ['./alumno-repository.component.scss']
+  selector: 'app-asesor-alumno-repo',
+  templateUrl: './asesor-alumno-repo.component.html',
+  styleUrls: ['./asesor-alumno-repo.component.scss']
 })
-export class AlumnoRepositoryComponent implements OnInit {
+export class AsesorAlumnoRepoComponent implements OnInit {
 
   private querySubscription: Subscription;
   public alumno: Alumno = new Alumno();
@@ -28,34 +28,25 @@ export class AlumnoRepositoryComponent implements OnInit {
   url: string;
 
   constructor( public queryService: QuerysService, public readData: ReadDataUService,
-               public apollo: Apollo, private route: ActivatedRoute, private auth: AuthService ) { }
+               public apollo: Apollo, private route: ActivatedRoute,  private auth: AuthService ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.cargandoData();
   }
 
   cargandoData() {
-    this.auth.changeMessage('alumnocompleto');
-    this.username = localStorage.getItem('username');
     this.route.params.subscribe(params => { this.repo = params.repositorio; });
-    this.photoUser = localStorage.getItem('photoURL');
+    this.route.params.subscribe(params => { this.username = params.usuario; });
+    this.getAlumno();
     this.getRepo( 'master:', this.repo );
     this.getContent('README.md');
-  }
-
-  validarUser() {
-    // tslint:disable-next-line: no-conditional-assignment
-    if ( !this.username ) {
-      this.route.params.subscribe(params => { this.repo = params.repositorio; });
-      this.route.params.subscribe(params => { this.username = params.usuario; });
-      this.getAlumno(); setTimeout(() => {  this.getRepo( 'master:', this.repo ); }, 100);
-      this.getContent('README.md');
-    }
+    this.auth.changeMessage('asesorcompleto');
   }
 
   getRepo( branch: string, name: string) {
     this.querySubscription = this.apollo.watchQuery<any>({
-      query: this.queryService.getRepository(), variables: { owner: this.username, name, branch }
+      query: this.queryService.getRepository(),
+      variables: { owner: this.username, name, branch }
     }).valueChanges.subscribe( ( resp: Repository ) => {
       this.repository = resp.data.repository.object.entries;
       this.sshUrl = resp.data.repository.sshUrl;
@@ -88,6 +79,6 @@ export class AlumnoRepositoryComponent implements OnInit {
 
   getAlumno() {
     this.readData.getAlumnoByControl( this.username ).subscribe( (resp: Alumno ) => { 
-                                                                                      console.log(resp); });
+      this.photoUser = resp.photoURL; });
  }
 }

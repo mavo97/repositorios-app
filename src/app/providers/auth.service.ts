@@ -18,7 +18,7 @@ import { User } from '../models/user';
 export class AuthService {
 
   public usuario: User = new User();
-  private uLogueado = new BehaviorSubject('sinusuario');
+  private uLogueado = new BehaviorSubject('');
   currentMessage = this.uLogueado.asObservable();
 
   constructor( public afAuth: AngularFireAuth,

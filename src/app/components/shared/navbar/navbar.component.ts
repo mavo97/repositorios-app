@@ -18,7 +18,8 @@ export class NavbarComponent implements OnInit {
   tipoUsuario: string;
   alumno: boolean;
   asesor: boolean;
-
+  dataa: string;
+  
   ngOnInit() {
 
     this.getToken();
@@ -47,5 +48,4 @@ export class NavbarComponent implements OnInit {
       localStorage.setItem('apikey', resp.token);
     });
   }
-
 }
