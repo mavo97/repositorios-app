@@ -20,6 +20,7 @@ import { AlumnoHomeComponent } from './components/alumnos/alumno-home/alumno-hom
 import { AsesorHomeComponent } from './components/asesores/asesor-home/asesor-home.component';
 import { AlumnoRepositoryComponent } from './components/alumnos/alumno-repository/alumno-repository.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
+import { AsesorUsuarioComponent } from './components/asesores/asesor-usuario/asesor-usuario.component';
 
 // Pipes
 import { SortByPipe } from './pipes/sort-by.pipe';
@@ -29,6 +30,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { GraphQLModule } from './graphql.module';
 import { MarkdownModule } from 'ngx-markdown';
+import { AsesorAlumnoRepoComponent } from './components/asesores/asesor-alumno-repo/asesor-alumno-repo.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { MarkdownModule } from 'ngx-markdown';
     AsesorHomeComponent,
     NavbarComponent,
     AlumnoRepositoryComponent,
-    SortByPipe
+    SortByPipe,
+    AsesorUsuarioComponent,
+    AsesorAlumnoRepoComponent
     ],
   imports: [
     BrowserModule,

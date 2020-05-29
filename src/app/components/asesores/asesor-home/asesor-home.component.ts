@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 // Models
 import { UID } from 'src/app/models/uid';
@@ -26,7 +27,7 @@ export class AsesorHomeComponent implements OnInit {
 
   constructor( public auth: AuthService,
                public validarcrear: ValidarCrearService,
-               public readData: ReadDataUService ) {
+               public readData: ReadDataUService, public router: Router ) {
 
     // Validaciones para el formulario
     this.forma = new FormGroup({
@@ -108,4 +109,6 @@ export class AsesorHomeComponent implements OnInit {
   getAlumnos() {
     this.readData.getAlumnos().subscribe( ( resp: Alumnos ) => this.alumnos = resp.records );
   }
+
+  verUsuario( usuario: string ) { this.router.navigate(['asesor/', usuario]); }
 }

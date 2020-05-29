@@ -159,28 +159,14 @@ export class AlumnoHomeComponent implements OnInit {
 
     const busqueda: string = event.target.value;
 
-    this.querySubscription = this.apollo.watchQuery<any>({
-      query: this.queryService.searchRepository(),
+    this.querySubscription = this.apollo.watchQuery<any>({ query: this.queryService.searchRepository(),
       variables: { owner: this.username, name: busqueda}
-    })
-      .valueChanges
-      .subscribe( (resp: Repositorio ) => {
-        this.repositorio = resp.data.repository;
-        this.resultado = false;
-        this.buscando = true;
-        this.loading = false;
-      }, (err) => {
-        this.resultado = true;
-      });
+    }).valueChanges.subscribe( (resp: Repositorio ) => 
+    { this.repositorio = resp.data.repository; this.resultado = false; this.buscando = true; this.loading = false;
+      }, (err) => { this.resultado = true; });
 
-    if ( busqueda.length > 0 ) {
-      this.buscando = true;
-      this.loading = true;
-    } else {
-      this.buscando = false;
-      this.resultado = false;
-      this.loading = false;
-    }
+    if ( busqueda.length > 0 ) { this.buscando = true; this.loading = true;
+    } else { this.buscando = false; this.resultado = false; this.loading = false; }
   }
 
   verRepositorio( repositorio: string ) { this.router.navigate(['alumno/', repositorio]); }
