@@ -17,7 +17,9 @@
                         </ng-template>
 
                         <div class="card-body">
-                            <p class="text-sm-center"><b>{{ asesor.displayName }}</b></p>
+                            <p class="text-sm-center" *ngIf="asesor.displayName !== 'null'">
+                                <b>{{ asesor.displayName }}</b>
+                            </p>
                             <p class="text-sm-center"><b>{{ asesor.email }}</b></p>
                             <p class="text-sm-center"><b>{{ asesor.departamento }}</b></p>
                             <p class="text-sm-center"><b>{{ asesor.telefono }}</b></p>
@@ -55,8 +57,10 @@
                                         </div>
                                         <div class="col-lg-9">
                                             <button class="link" (click)="verUsuario(alumno.username)">{{alumno.username}}</button><br>
-                                            <small class="text-secondary"><b>{{alumno.displayName}}</b></small>
-                                            <small> - </small>
+                                            <small class="text-secondary" *ngIf="alumno.displayName !== 'null'">
+                                                <b>{{alumno.displayName}}</b>
+                                            </small>
+                                            <small *ngIf="alumno.displayName !== 'null'"> - </small>
                                             <small class="text-secondary">{{alumno.nocontrol}}</small>
                                         </div>
                                     </div>

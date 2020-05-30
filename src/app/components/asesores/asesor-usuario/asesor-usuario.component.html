@@ -15,7 +15,9 @@
                     </ng-template>
 
                     <div class="card-body">
-                        <p class="text-sm-center"><b>{{ alumno.displayName }}</b></p>
+                        <p class="text-sm-center" *ngIf="alumno.displayName !== 'null'">
+                            <b>{{ alumno.displayName }}</b>
+                        </p>
                         <p class="text-sm-center"><b>{{ alumno.username }}</b></p>
                         <p class="text-sm-center"><b>{{ alumno.email }}</b></p>
                         <p class="text-sm-center"><b>{{ alumno.nocontrol }}</b></p>
