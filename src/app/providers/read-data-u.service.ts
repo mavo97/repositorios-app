@@ -13,7 +13,7 @@ import { UID } from '../models/uid';
 export class ReadDataUService {
 
   // private url = 'http://localhost/api-repos';
-  private url = 'https://api-repos.herokuapp.com/';
+  private url = 'https://api-repos.herokuapp.com';
 
   constructor( private http: HttpClient ) { }
 

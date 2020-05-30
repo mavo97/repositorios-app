@@ -12,7 +12,7 @@ import { Asesor } from '../models/asesor';
 export class ValidarCrearService {
 
   // private url = 'http://localhost/api-repos';
-  private url = 'https://api-repos.herokuapp.com/';
+  private url = 'https://api-repos.herokuapp.com';
 
   constructor( private http: HttpClient ) { }
 
