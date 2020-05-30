@@ -89,7 +89,7 @@ export class AlumnoHomeComponent implements OnInit {
           this.username = localStorage.getItem('username');
           this.getRepositories();
 
-        }, 100);
+        }, 500);
 
       }
 
