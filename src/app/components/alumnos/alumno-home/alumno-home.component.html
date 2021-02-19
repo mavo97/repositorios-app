@@ -1,194 +1,317 @@
 <!-- Container -->
 
 <div *ngIf="!noRegistrado">
-    <div class="container main-container">
+  <div class="container main-container">
+    <div class="row d-flex justify-content-center" *ngIf="reposLoading">
+      <div
+        class="spinner-border spinner-margin"
+        style="width: 10rem; height: 10rem"
+        role="status"
+      >
+        <span class="visually-hidden"></span>
+      </div>
+    </div>
+    <div class="row" *ngIf="!reposLoading">
+      <!-- profile -->
+      <!-- profile -->
+      <div class="col-sm-3">
+        <div class="container">
+          <div class="card">
+            <ng-container *ngIf="alumno.photoURL; else elseTemplate">
+              <img
+                [src]="alumno.photoURL"
+                class="card-img-top img-fluid"
+                alt="..."
+                width="100"
+                height="200"
+              />
+            </ng-container>
+            <ng-template #elseTemplate>
+              <img
+                src="../../../../assets/images/teacher.png"
+                class="card-img-top"
+                alt="..."
+                width="100"
+                height="200"
+              />
+            </ng-template>
 
-        <div class="row">
-            <!-- profile -->
-            <!-- profile -->
-            <div class="col-lg-3 col-md-3">
-                <div class="container">
-                    <div class="card">
-
-                        <ng-container *ngIf="alumno.photoURL; else elseTemplate">
-                            <img [src]="alumno.photoURL" class="card-img-top" alt="..." width="100" height="200">
-                        </ng-container>
-                        <ng-template #elseTemplate>
-                            <img src="../../../../assets/images/teacher.png" class="card-img-top" alt="..." width="100" height="200">
-                        </ng-template>
-
-                        <div class="card-body">
-                            <p class="text-sm-center" *ngIf="alumno.displayName !== 'null'">
-                                <b>{{ alumno.displayName }}</b>
-                            </p>
-                            <p class="text-sm-center"><b>{{ alumno.username }}</b></p>
-                            <p class="text-sm-center"><b>{{ alumno.email }}</b></p>
-                            <p class="text-sm-center"><b>{{ alumno.nocontrol }}</b></p>
-
-                        </div>
-                    </div>
-                    <br>
-                    <!-- 
+            <div class="card-body">
+              <p class="text-sm-center" *ngIf="alumno.displayName !== 'null'">
+                <b>{{ alumno.displayName }}</b>
+              </p>
+              <p class="text-sm-center">
+                <b>{{ alumno.username }}</b>
+              </p>
+              <p class="text-sm-center">
+                <b>{{ alumno.email }}</b>
+              </p>
+              <p class="text-sm-center">
+                <b>{{ alumno.nocontrol }}</b>
+              </p>
+            </div>
+          </div>
+          <br />
+          <!-- 
             <button type="button" class="btn btn-light btn-block btn-border"><b>Editar perfil</b></button>
             -->
-                </div>
-
-            </div>
-            <div class="col-lg-9 col-md-9">
-
-                <div class="container main-container">
-                    <h4><b>Repositorios</b></h4>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" #reponame (keyup)="buscarRepo($event)" placeholder="Buscar repositorio" aria-describedby="basic-addon1">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <a class="btn btn-success" href="./create-repository.html"><i class="fas fa-folder-open"></i> Nuevo</a>
-                        </div>
-                    </div>
-
-                    <hr>
-                    <div *ngIf="loading">
-                        <div class="d-flex justify-content-center">
-                            <div class="spinner-border" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </div>
-                        <div class="justify-content-center mt-2">
-                            <div class="alert alert-warning" role="alert">
-                                <small>Buscando repositorio...</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div *ngIf="!buscando">
-                        <ul class="list-group" *ngFor="let repo of nodosRepositorios">
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col">
-                                        <button type="button" class="link" (click)="verRepositorio(repo.name)">
-                                            <h5><b>{{ repo.name }}</b></h5>
-                                        </button>
-                                        <!--<a [routerLink]="['alumno/', repo.name ]">{{ repo.name }}</a>-->
-
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col mt-0">
-                                        <p class="description-font">
-                                            {{ repo.description }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-8 mt-0">
-                                        <p class="description-font">
-                                            <span class="dot" [ngStyle]="{ 'background-color': repo.primaryLanguage.color }"></span> {{ repo.primaryLanguage.name }}
-                                        </p>
-                                    </div>
-                                    <div class="col-sm-4 mt-0">
-                                        <p class="update-font">
-                                            Actualizado {{ repo.pushedAt | date: 'EEEE dd LLLL yyyy' }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
-                    </div>
-
-                    <div *ngIf="!resultado">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col">
-                                        <button type="button" class="link" (click)="verRepositorio(repositorio.name)">
-                                            <h5><b>{{ repositorio.name }}</b></h5>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col mt-0">
-                                        <p class="description-font">
-                                            {{ repositorio.description }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-8 mt-0">
-                                        <p class="description-font" *ngIf="repositorio.primaryLanguage">
-                                            <span class="dot" [ngStyle]="{ 'background-color': repositorio.primaryLanguage.color }"></span> {{ repositorio.primaryLanguage.name }}
-                                        </p>
-                                    </div>
-                                    <div class="col-sm-4 mt-0">
-                                        <p class="update-font">
-                                            Actualizado {{ repositorio.pushedAt | date: 'EEEE dd LLLL yyyy' }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
-                    </div>
-
-
-                </div>
-            </div>
         </div>
+      </div>
+      <div class="col-sm-9">
+        <div class="container main-container">
+          <h4><b>Repositorios</b></h4>
+          <hr />
+          <div class="row">
+            <div class="col-sm-8">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  #reponame
+                  (keyup)="buscarRepo($event)"
+                  placeholder="Buscar repositorio"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+            </div>
+            <!-- <div class="col-sm-4">
+              <a class="btn btn-success" href="./create-repository.html"
+                ><i class="fas fa-folder-open"></i> Nuevo</a
+              >
+            </div> -->
+          </div>
 
+          <hr />
+          <div *ngIf="loading">
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div class="justify-content-center mt-2">
+              <div class="alert alert-warning" role="alert">
+                <small>Buscando repositorio...</small>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!buscando">
+            <ul class="list-group" *ngFor="let repo of nodosRepositorios">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col">
+                    <button
+                      type="button"
+                      class="link"
+                      (click)="verRepositorio(repo.name)"
+                    >
+                      <h5>
+                        <b>{{ repo.name }}</b>
+                      </h5>
+                    </button>
+                    <!--<a [routerLink]="['alumno/', repo.name ]">{{ repo.name }}</a>-->
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col mt-0">
+                    <p class="description-font">
+                      {{ repo.description }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-8 mt-0" *ngIf="repo.primaryLanguage">
+                    <p class="description-font">
+                      <span
+                        class="dot"
+                        [ngStyle]="{
+                          'background-color': repo.primaryLanguage.color
+                        }"
+                      ></span>
+                      {{ repo.primaryLanguage.name }}
+                    </p>
+                  </div>
+                  <div class="col-sm-4 mt-0">
+                    <p class="update-font">
+                      Actualizado
+                      {{ repo.pushedAt | date: "EEEE dd LLLL yyyy" }}
+                    </p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <nav>
+              <ul class="pagination justify-content-center">
+                <li class="page-item" [ngClass]="{ active: index === 1 }">
+                  <a class="page-link" (click)="sort(1)">1</a>
+                </li>
+                <li
+                  class="page-item"
+                  [ngClass]="{ active: index === 2 }"
+                  *ngIf="lengthRepositorios > 5"
+                >
+                  <a class="page-link" (click)="sort(2)">2</a>
+                </li>
+                <li
+                  class="page-item"
+                  [ngClass]="{ active: index === 3 }"
+                  *ngIf="lengthRepositorios > 10"
+                >
+                  <a class="page-link" (click)="sort(3)">3</a>
+                </li>
+                <li
+                  class="page-item"
+                  [ngClass]="{ active: index === 4 }"
+                  *ngIf="lengthRepositorios > 15"
+                >
+                  <a class="page-link" (click)="sort(4)">4</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <div *ngIf="!resultado">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col">
+                    <button
+                      type="button"
+                      class="link"
+                      (click)="verRepositorio(repositorio.name)"
+                    >
+                      <h5>
+                        <b>{{ repositorio.name }}</b>
+                      </h5>
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col mt-0">
+                    <p class="description-font">
+                      {{ repositorio.description }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-8 mt-0">
+                    <p
+                      class="description-font"
+                      *ngIf="repositorio.primaryLanguage"
+                    >
+                      <span
+                        class="dot"
+                        [ngStyle]="{
+                          'background-color': repositorio.primaryLanguage.color
+                        }"
+                      ></span>
+                      {{ repositorio.primaryLanguage.name }}
+                    </p>
+                  </div>
+                  <div class="col-sm-4 mt-0">
+                    <p class="update-font">
+                      Actualizado
+                      {{ repositorio.pushedAt | date: "EEEE dd LLLL yyyy" }}
+                    </p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
-
-
-
 
 <!-- Registro -->
 <div class="container mt-2" *ngIf="noRegistrado">
-
-    <div class="alert alert-danger" role="alert">
-        Es necesario completar su información para poder hacer uso de la plataforma.
+  <div class="alert alert-danger" role="alert">
+    Es necesario completar su información para poder hacer uso de la plataforma.
+  </div>
+  <!-- (ngSubmit)="completarRegistro()" -->
+  <form [formGroup]="forma" (ngSubmit)="completarRegistro()">
+    <div class="form-group">
+      <label for="control"
+        ><i class="fab fa-slack-hash"></i> Número de control</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="control"
+        formControlName="nocontrol"
+      />
+      <small id="control" class="form-text text-muted"
+        >Ingresé su número de control.</small
+      >
     </div>
-    <!-- (ngSubmit)="completarRegistro()" -->
-    <form [formGroup]="forma" (ngSubmit)="completarRegistro()">
+    <!-- Validaciones -->
+    <div
+      *ngIf="
+        forma.controls['nocontrol'].errors?.required &&
+        forma.dirty &&
+        forma.touched
+      "
+      class="form-control-feedback"
+    >
+      <p style="color: red">*Campo requerido.</p>
+    </div>
+    <div
+      *ngIf="
+        forma.controls['nocontrol'].errors?.maxlength &&
+        forma.controls['nocontrol'].dirty
+      "
+      class="form-control-feedback"
+    >
+      <p style="color: red">*Maximo 8 números.</p>
+    </div>
+    <div
+      *ngIf="
+        forma.controls['nocontrol'].errors?.minlength &&
+        forma.controls['nocontrol'].dirty
+      "
+      class="form-control-feedback"
+    >
+      <p style="color: red">*Minimo 8 números.</p>
+    </div>
+    <div
+      *ngIf="
+        forma.controls['nocontrol'].errors?.pattern &&
+        forma.controls['nocontrol'].dirty
+      "
+      class="form-control-feedback"
+    >
+      <p style="color: red">*Solo se permiten números.</p>
+    </div>
 
+    <div class="form-group">
+      <label for="username"
+        ><i class="fab fa-github"></i> Nombre de usuario en GitHub</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        formControlName="username"
+      />
+      <small id="username" class="form-text text-muted"
+        >Ingresé su nombre de usuario de su cuenta GitHub.</small
+      >
+    </div>
+    <!-- Validaciones -->
+    <div
+      *ngIf="
+        forma.controls['username'].errors?.required &&
+        forma.dirty &&
+        forma.touched
+      "
+      class="form-control-feedback"
+    >
+      <p style="color: red">*Campo requerido.</p>
+    </div>
 
-        <div class="form-group">
-            <label for="control"><i class="fab fa-slack-hash"></i> Número de control</label>
-            <input type="text" class="form-control" id="control" formControlName="nocontrol">
-            <small id="control" class="form-text text-muted">Ingresé su número de control.</small>
-        </div>
-        <!-- Validaciones -->
-        <div *ngIf="forma.controls['nocontrol'].errors?.required && (forma.dirty && forma.touched) " class="form-control-feedback">
-            <p style="color: red ">*Campo requerido.</p>
-        </div>
-        <div *ngIf="forma.controls['nocontrol'].errors?.maxlength && forma.controls['nocontrol'].dirty " class="form-control-feedback ">
-            <p style="color: red ">*Maximo 8 números.</p>
-        </div>
-        <div *ngIf="forma.controls['nocontrol'].errors?.minlength && forma.controls['nocontrol'].dirty " class="form-control-feedback ">
-            <p style="color: red ">*Minimo 8 números.</p>
-        </div>
-        <div *ngIf="forma.controls['nocontrol'].errors?.pattern && forma.controls['nocontrol'].dirty " class="form-control-feedback ">
-            <p style="color: red ">*Solo se permiten números.</p>
-        </div>
-
-
-        <div class="form-group">
-            <label for="username"><i class="fab fa-github"></i> Nombre de usuario en GitHub</label>
-            <input type="text" class="form-control" id="username" formControlName="username">
-            <small id="username" class="form-text text-muted">Ingresé su nombre de usuario de su cuenta GitHub.</small>
-        </div>
-        <!-- Validaciones -->
-        <div *ngIf="forma.controls['username'].errors?.required && (forma.dirty && forma.touched) " class="form-control-feedback">
-            <p style="color: red ">*Campo requerido.</p>
-        </div>
-
-
-        <button type="submit" [disabled]="!forma.valid" class="btn btn-primary">Registrar</button>
-
-
-    </form>
-
+    <button type="submit" [disabled]="!forma.valid" class="btn btn-primary">
+      Registrar
+    </button>
+  </form>
 </div>

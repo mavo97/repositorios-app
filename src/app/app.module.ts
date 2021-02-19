@@ -31,6 +31,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { GraphQLModule } from './graphql.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { AsesorAlumnoRepoComponent } from './components/asesores/asesor-alumno-repo/asesor-alumno-repo.component';
+import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { AsesorAlumnoRepoComponent } from './components/asesores/asesor-alumno-r
     AlumnoRepositoryComponent,
     SortByPipe,
     AsesorUsuarioComponent,
-    AsesorAlumnoRepoComponent
+    AsesorAlumnoRepoComponent,
+    SanitizeHtmlPipe
     ],
   imports: [
     BrowserModule,

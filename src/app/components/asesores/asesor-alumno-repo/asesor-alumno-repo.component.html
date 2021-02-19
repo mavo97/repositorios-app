@@ -1,109 +1,150 @@
-<div class="container main-container">
+<div class="container main-container" *ngIf="!loading">
+  <h5>
+    <i class="far fa-folder-open"></i>
+    <a [routerLink]="['/asesor', username]"> {{ username }}</a> /
+    <small>{{ repo }}</small>
+  </h5>
 
-    <h5><i class="far fa-folder-open"></i> <a [routerLink]="['/asesor', username]">  {{ username }}</a> / <small>{{repo}}</small></h5>
+  <!-- repository code header -->
+  <div class="row justify-content-center">
+    <div class="col-lg-3 mb-1 justify-content-center">
+      <br />
+      <a type="button" class="btn btn-light" (click)="getCommits(branchName)"
+        ><i class="fas fa-clock"></i> Commits</a
+      >
+    </div>
 
-    <!-- repository code header -->
-    <div class="row justify-content-center">
-
-        <div class="col-lg-3 mb-1 justify-content-center">
-            <br>
-            <a type="button" class="btn btn-light" (click)="getCommits()"><i class="fas fa-clock"></i> Commits</a>
-        </div>
-
-        <div class="col-lg-3 mb-1 justify-content-center">
-            <br>
-            <div>
-                <a class="btn btn-primary" role="button">
-                    <i class="fas fa-code-branch"></i><b> Branch:</b> master
-                </a>
-                <!--
+    <div class="col-lg-3 mb-1 justify-content-center">
+      <br />
+      <div>
+        <a class="btn btn-primary" role="button">
+          <i class="fas fa-code-branch"></i><b> Branch:</b> {{ branchName }}
+        </a>
+        <!--
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="#"><i class="fas fa-code-branch"></i> master</a>
                     <a class="dropdown-item" href="#"><i class="fas fa-code-branch"></i> test</a>
                 </div>
                 -->
-            </div>
-        </div>
-
-        <div class="col-lg-3 justify-content-center">
-            <div class="form-group">
-                <label for="url"><a (click)="copyUrl(input)" class="btn btn-light btn-sm"><i class="fas fa-copy"></i></a><small><b> Copiar url para clonar con SSH</b></small></label>
-                <input type="text" id="url" class="form-control" #input [value]=sshUrl readonly>
-            </div>
-
-        </div>
-
-    </div>
-    <div class="container mb-2" *ngIf="commit">
-        <ul class="list-group" *ngFor="let c of commits">
-            <li class="list-group-item">
-                {{ c.node.message }}<br>
-                <small><b>{{ c.node.author.name }}</b></small><small class="text-secondary">committed: {{ c.node.author.date | date : 'EEEE dd LLLL yyyy' }}</small>
-            </li>
-        </ul>
-        <button class="btn btn-danger btn-sm" (click)="hideCommits()">Ocultar commits</button>
+      </div>
     </div>
 
-    <!-- Code -->
-    <div class="container">
-        Ver en GitHub <a (click)="verRepo(url)" class="btn btn-light btn-sm"><i class="fab fa-github-square fa-2x"></i></a>
+    <div class="col-lg-3 justify-content-center">
+      <div class="form-group">
+        <label for="url"
+          ><a (click)="copyUrl(input)" class="btn btn-light btn-sm"
+            ><i class="fas fa-copy"></i></a
+          ><small><b> Copiar url para clonar con SSH</b></small></label
+        >
+        <input
+          type="text"
+          id="url"
+          class="form-control"
+          #input
+          [value]="sshUrl"
+          readonly
+        />
+      </div>
     </div>
-    <div class="table-responsive-sm mt-2">
+  </div>
+  <div class="container mb-2" *ngIf="commit">
+    <ul class="list-group" *ngFor="let c of commits">
+      <li class="list-group-item">
+        {{ c.node.message }}<br />
+        <small
+          ><b>{{ c.node.author.name }}</b></small
+        ><small class="text-secondary"
+          >committed:
+          {{ c.node.author.date | date: "EEEE dd LLLL yyyy" }}</small
+        >
+      </li>
+    </ul>
+    <button class="btn btn-danger btn-sm" (click)="hideCommits()">
+      Ocultar commits
+    </button>
+  </div>
 
-        <table class="table table-hover table-sm">
-            <thead class="table-success">
-                <tr>
-                    <th class="col-sm-8">
-                        <ng-container *ngIf="photoUser; else elseTemplate">
-                            <a [routerLink]="['/asesor', username]"><img class="rounded float-left" width="25px" height="25px" [src]="photoUser"></a> <small><b>   mavo97 </b> commit</small>
-                        </ng-container>
-                        <ng-template #elseTemplate>
-                            <a [routerLink]="['/asesor', username]"><img src="../../../../assets/images/teacher.png" class="rounded float-left" width="25px" height="25px"></a> <small><b>  mavo97 </b> commit</small>
-                        </ng-template>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let rep of repository | sortBy: 'desc' : 'type' ">
-                    <ng-container *ngIf="rep.type === 'tree'; else elseTemplate">
-                        <td>
-                            <i class="fas fa-folder"></i> <a> {{rep.name}}</a>
-                        </td>
-                    </ng-container>
-                    <ng-template #elseTemplate>
-                        <td>
-                            <i class="far fa-file"></i> <a> {{rep.name}}</a>
-                        </td>
-                    </ng-template>
-                </tr>
-            </tbody>
-        </table>
+  <!-- Code -->
+  <div class="container">
+    Ver en GitHub
+    <a (click)="verRepo(url)" class="btn btn-light btn-sm"
+      ><i class="fab fa-github-square fa-2x"></i
+    ></a>
+  </div>
+  <div class="table-responsive-sm mt-2">
+    <table class="table table-hover table-sm">
+      <thead class="table-success">
+        <tr>
+          <th class="col-sm-8">
+            <ng-container *ngIf="photoUser; else elseTemplate">
+              <a [routerLink]="['/asesor', username]"
+                ><img
+                  class="rounded float-left"
+                  width="25px"
+                  height="25px"
+                  [src]="photoUser"
+              /></a>
+              <small><b> mavo97 </b> commit</small>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <a [routerLink]="['/asesor', username]"
+                ><img
+                  src="../../../../assets/images/teacher.png"
+                  class="rounded float-left"
+                  width="25px"
+                  height="25px"
+              /></a>
+              <small><b> mavo97 </b> commit</small>
+            </ng-template>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rep of repository | sortBy: 'desc':'type'">
+          <ng-container *ngIf="rep.type === 'tree'; else elseTemplate">
+            <td>
+              <i class="fas fa-folder"></i> <a> {{ rep.name }}</a>
+            </td>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <td>
+              <i class="far fa-file"></i> <a> {{ rep.name }}</a>
+            </td>
+          </ng-template>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
+  <!--README.md-->
 
+  <div class="table-responsive-sm">
+    <table class="table table-hover table-sm">
+      <thead style="background-color: #edffea">
+        <tr>
+          <th class="col-sm-8">
+            <h6>
+              <small
+                ><b><i class="fas fa-book-open"></i> README.md</b></small
+              >
+            </h6>
+          </th>
+        </tr>
+      </thead>
+    </table>
+    <div class="container mb-2">
+      <markdown [data]="content"></markdown>
     </div>
-
-
-
-
-    <!--README.md-->
-
-    <div class="table-responsive-sm">
-
-        <table class="table table-hover table-sm">
-            <thead style="background-color: #edffea;">
-                <tr>
-                    <th class="col-sm-8">
-                        <h6><small><b><i class="fas fa-book-open"></i> README.md</b></small></h6>
-                    </th>
-                </tr>
-            </thead>
-        </table>
-        <div class="container mb-2">
-
-            <markdown [data]="content"></markdown>
-
-        </div>
-
-
+  </div>
+</div>
+<div class="container main-container" *ngIf="loading">
+  <div class="row d-flex justify-content-center">
+    <div
+      class="spinner-border spinner-margin"
+      style="width: 10rem; height: 10rem"
+      role="status"
+    >
+      <span class="visually-hidden"></span>
     </div>
+  </div>
 </div>
